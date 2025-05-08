@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen/HomeScreen.tsx';
 import WelcomeScreen from "./screens/WelcomeScreen/WelcomeScreen.tsx";
+import LearningScreen from "./screens/LearningScreen/LearningScreen.tsx";
+import CategoryScreen from "./screens/CategoryScreen/CategoryScreen.tsx";
 
 const Stack = createStackNavigator();
 
@@ -12,6 +14,8 @@ const App: React.FC = () => {
             <Stack.Navigator initialRouteName="Welcome">
                 <Stack.Screen name="Welcome" component={WelcomeScreen} />
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
+                <Stack.Screen name="LearningScreen" component={LearningScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );
