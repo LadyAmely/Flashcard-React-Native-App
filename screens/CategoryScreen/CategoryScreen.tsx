@@ -12,9 +12,7 @@ const CategoryScreen = () => {
     const categories = ['Foreign languages', 'Mathematics', 'History', 'Biology'];
 
 
-    const goToLearningScreen = (category: string) => {
-        navigation.navigate('LearningScreen', { category });
-    };
+
 
     return (
         <View style={styles.container}>
@@ -23,7 +21,7 @@ const CategoryScreen = () => {
                 data={categories}
                 renderItem={({ item }) => (
                     <View style={styles.categoryItem}>
-                        <Button title={item} onPress={() => goToLearningScreen(item)} />
+
                     </View>
                 )}
                 keyExtractor={(item) => item}

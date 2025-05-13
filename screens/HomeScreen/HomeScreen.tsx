@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Modal, Button, Text } from 'react-native';
+import { View, Modal, Button} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FlashcardList from '../../components/organisms/FlashcardList/FlashcardList.tsx';
 import FlashcardForm from '../../components/organisms/FlashcardForm/FlashcardForm.tsx';
 import FabButton from '../../components/atoms/FabButton/FabButton.tsx';
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../types/navigation";
-import flashcard from "../../components/molecules/Flashcard/Flashcard.tsx";
+
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
@@ -40,14 +40,16 @@ const HomeScreen = () => {
     };
 
     const goToCategoryScreen = () => {
-        navigation.navigate('CategoryScreen');
+        navigation.navigate('LearningScreen', { flashcards });
     };
+
+
 
     return (
         <View style={{ flex: 1, position: 'relative', padding: 20 }}>
             <FlashcardList flashcards={flashcards} deleteFlashcard={deleteFlashcard} />
 
-            <Button title="Przejdź do kategorii" onPress={goToCategoryScreen} />
+            <Button title="Przejdź do quizu" onPress={goToCategoryScreen} />
 
             <Modal visible={isModalVisible} animationType="slide" transparent={true} onRequestClose={closeModal}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
