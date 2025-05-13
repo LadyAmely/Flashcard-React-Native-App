@@ -7,22 +7,28 @@ import Button from '../../atoms/Button/Button';
 interface FlashcardProps {
     question: string;
     answer: string;
+    index: number;
+    onDelete: (index: number) => void;
 }
 
-const Flashcard: React.FC<FlashcardProps> = ({ question, answer }) => {
+const Flashcard: React.FC<FlashcardProps> = ({ question, answer, index, onDelete }) => {
     const [showAnswer, setShowAnswer] = useState(false);
-
-    const toggleAnswer = () => {
-        setShowAnswer(!showAnswer);
-    };
 
     return (
         <Card>
             <Question question={question} />
             {showAnswer && <Answer answer={answer} />}
-            <Button onPress={toggleAnswer} title={showAnswer ? 'Ukryj odpowiedź' : 'Wyświetl odpowiedź'} />
+            <Button
+                onPress={() => setShowAnswer(!showAnswer)}
+                title={showAnswer ? 'Ukryj odpowiedź' : 'Wyświetl odpowiedź'}
+            />
+            <Button
+                onPress={() => onDelete(index)}
+                title="Usuń"
+            />
         </Card>
     );
 };
+
 
 export default Flashcard;

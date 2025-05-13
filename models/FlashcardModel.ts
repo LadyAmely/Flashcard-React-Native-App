@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 export interface Flashcard {
@@ -26,6 +26,14 @@ export class FlashcardModel {
             await addDoc(collection(db, 'flashcards'), { question, answer });
         } catch (error) {
             throw new Error('Błąd przy dodawaniu');
+        }
+    }
+
+    async deleteFlashcard(id: string): Promise<void>{
+        try{
+            await deleteDoc(doc(db, 'flashcards', id));
+        }catch(error){
+            throw new Error("Błąd przy usuwaniu danych");
         }
     }
 }

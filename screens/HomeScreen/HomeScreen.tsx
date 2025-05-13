@@ -6,6 +6,7 @@ import FlashcardForm from '../../components/organisms/FlashcardForm/FlashcardFor
 import FabButton from '../../components/atoms/FabButton/FabButton.tsx';
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../types/navigation";
+import flashcard from "../../components/molecules/Flashcard/Flashcard.tsx";
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
@@ -25,6 +26,11 @@ const HomeScreen = () => {
         setIsModalVisible(false);
     };
 
+    const deleteFlashcard = (index: number) => {
+        const updated = flashcards.filter((_, i)=>i!=index);
+        setFlashcards(updated);
+    };
+
     const openModal = () => {
         setIsModalVisible(true);
     };
@@ -39,7 +45,7 @@ const HomeScreen = () => {
 
     return (
         <View style={{ flex: 1, position: 'relative', padding: 20 }}>
-            <FlashcardList flashcards={flashcards} />
+            <FlashcardList flashcards={flashcards} deleteFlashcard={deleteFlashcard} />
 
             <Button title="Przejdź do kategorii" onPress={goToCategoryScreen} />
 
