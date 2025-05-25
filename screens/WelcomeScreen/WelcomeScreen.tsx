@@ -15,7 +15,7 @@ const WelcomeScreen: React.FC = () => {
     const navigation = useNavigation<WelcomeScreenNavigationProp>();
 
     const handleStartClick = () => {
-        navigation.navigate('HomeScreen');
+        navigation.navigate('OnboardingScreen');
     };
 
     return (

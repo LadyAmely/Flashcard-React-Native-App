@@ -1,61 +1,63 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../types/navigation';
-import { StackNavigationProp } from '@react-navigation/stack';
-import {styles} from "./quizScreenStyles.ts";
+import { styles } from './quizScreenStyles';
+import {useQuizLogic} from "./hooks.ts";
+
 
 type QuizScreenRouteProp = RouteProp<RootStackParamList, 'QuizScreen'>;
-type QuizScreenNavigationProp = StackNavigationProp<RootStackParamList, 'QuizScreen'>;
 
 const QuizScreen = () => {
     const route = useRoute<QuizScreenRouteProp>();
-    const navigation = useNavigation<QuizScreenNavigationProp>();
-
     const { flashcards } = route.params;
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [showAnswer, setShowAnswer] = useState(false);
-    const [knownCount, setKnownCount] = useState(0);
-
-    const currentCard = flashcards[currentIndex];
-
-    const handleKnow = () => {
-        setKnownCount(knownCount + 1);
-        goToNextCard();
-    };
-
-    const handleDontKnow = () => {
-        goToNextCard();
-    };
-
-    const goToNextCard = () => {
-        setShowAnswer(false);
-        if (currentIndex + 1 < flashcards.length) {
-            setCurrentIndex(currentIndex + 1);
-        } else {
-            navigation.goBack();
-        }
-    };
+    const {
+        currentIndex,
+        currentCard,
+        showAnswer,
+        setShowAnswer,
+        handleKnow,
+        handleDontKnow,
+    } = useQuizLogic(flashcards);
 
     return (
         <View style={styles.container}>
             <Text style={styles.counter}>
-                {currentIndex + 1} / {flashcards.length}
+                Fiszka {currentIndex + 1} z {flashcards.length}
             </Text>
+
+            <Text style={styles.quizTitle}>Sprawdź swoją wiedzę 📚</Text>
 
             <View style={styles.card}>
                 <Text style={styles.question}>{currentCard.question}</Text>
-                {showAnswer && <Text style={styles.answer}>{currentCard.answer}</Text>}
-                {!showAnswer && (
-                    <Button title="Pokaż odpowiedź" onPress={() => setShowAnswer(true)} />
+
+                {showAnswer ? (
+                    <>
+                        <Text style={styles.answer}>{currentCard.answer}</Text>
+                        <Text style={styles.subtleNote}>Czy znałeś tę odpowiedź?</Text>
+                    </>
+                ) : (
+                    <>
+                        <Text style={styles.hint}>
+                            Spróbuj odpowiedzieć samodzielnie, a potem odkryj odpowiedź
+                        </Text>
+                        <TouchableOpacity style={styles.button} onPress={() => setShowAnswer(true)}>
+                            <Text style={styles.buttonText}>Pokaż odpowiedź</Text>
+                        </TouchableOpacity>
+                    </>
                 )}
             </View>
 
             {showAnswer && (
                 <View style={styles.buttons}>
-                    <Button title="Znam" onPress={handleKnow} />
-                    <Button title="Nie znam" onPress={handleDontKnow} />
+                    <TouchableOpacity style={styles.button} onPress={handleKnow}>
+                        <Text style={styles.buttonText}>Znam</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button} onPress={handleDontKnow}>
+                        <Text style={styles.buttonText}>Nie znam</Text>
+                    </TouchableOpacity>
                 </View>
             )}
         </View>

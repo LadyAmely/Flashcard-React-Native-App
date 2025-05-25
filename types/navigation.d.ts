@@ -7,4 +7,7 @@ export type RootStackParamList = {
     LearningScreen: { flashcards: { question: string; answer: string }[] };
     SummaryScreen: { category: string; correctAnswers: number; totalQuestions: number }; // Parametry do podsumowania
     QuizScreen: { flashcards: { question: string; answer: string }[] };
+    StatsScreen: { correct: number; total: number };
+    ProfileScreen: undefined;
+    OnboardingScreen: undefined;
 };

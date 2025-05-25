@@ -1,4 +1,5 @@
-import { collection, addDoc, getDocs, query, doc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+
 import { db } from '../firebase/firebaseConfig';
 
 export interface Flashcard {
@@ -8,32 +9,34 @@ export interface Flashcard {
 
 export class FlashcardModel {
     async fetchFlashcards(): Promise<Flashcard[]> {
-        try {
-            const q = query(collection(db, 'flashcards'));
-            const querySnapshot = await getDocs(q);
-            const flashcards: Flashcard[] = [];
-            querySnapshot.forEach((doc) => {
-                flashcards.push({ question: doc.data().question, answer: doc.data().answer });
-            });
-            return flashcards;
-        } catch (error) {
-            throw new Error('Błąd przy pobieraniu danych');
-        }
+        const q = query(collection(db, 'flashcards'));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map((doc) => ({
+            question: doc.data().question,
+            answer: doc.data().answer,
+        }));
+    }
+
+    async fetchFlashcardsWithId(): Promise<(Flashcard & { id: string })[]> {
+        const q = query(collection(db, 'flashcards'));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            question: doc.data().question,
+            answer: doc.data().answer,
+        }));
     }
 
     async addFlashcard(question: string, answer: string): Promise<void> {
-        try {
-            await addDoc(collection(db, 'flashcards'), { question, answer });
-        } catch (error) {
-            throw new Error('Błąd przy dodawaniu');
-        }
+        await addDoc(collection(db, 'flashcards'), { question, answer });
     }
 
-    async deleteFlashcard(id: string): Promise<void>{
-        try{
-            await deleteDoc(doc(db, 'flashcards', id));
-        }catch(error){
-            throw new Error("Błąd przy usuwaniu danych");
-        }
+    async deleteFlashcard(id: string): Promise<void> {
+        await deleteDoc(doc(db, 'flashcards', id));
+    }
+
+    async updateFlashcard(id: string, updatedData: { question: string; answer: string }): Promise<void> {
+        const ref = doc(db, 'flashcards', id);
+        await updateDoc(ref, updatedData);
     }
 }

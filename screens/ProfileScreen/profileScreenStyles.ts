@@ -1,0 +1,70 @@
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../../styles/colors/variables';
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.background,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 24,
+    },
+    avatar: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        marginBottom: 20,
+        borderWidth: 3,
+        borderColor: COLORS.primary,
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 4,
+    },
+    name: {
+        fontSize: 22,
+        fontWeight: '700',
+        color: COLORS.textPrimary,
+        marginBottom: 8,
+    },
+    progress: {
+        fontSize: 16,
+        color: COLORS.textSecondary,
+        marginBottom: 24,
+    },
+    button: {
+        backgroundColor: COLORS.primary,
+        paddingVertical: 14,
+        paddingHorizontal: 32,
+        borderRadius: 30,
+        alignItems: 'center',
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    buttonText: {
+        color: COLORS.buttonText,
+        fontSize: 16,
+        fontWeight: '600',
+        letterSpacing: 0.5,
+    },
+    input: {
+        width: '100%',
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        fontSize: 16,
+        color: COLORS.textPrimary,
+        marginVertical: 12,
+        shadowColor: COLORS.shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+
+});
