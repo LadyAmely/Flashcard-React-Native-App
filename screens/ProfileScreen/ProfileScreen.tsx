@@ -13,6 +13,7 @@ import { RootStackParamList } from '../../types/navigation';
 import { styles } from './profileScreenStyles';
 import { launchImageLibrary, Asset } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BottomMenu from "../../components/atoms/BottomMenu/BottomMenu.tsx";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'WelcomeScreen'>;
 
@@ -67,6 +68,12 @@ const ProfileScreen = () => {
         }
     };
 
+    const menuItems = [
+        { label: 'Home', onPress: () => navigation.navigate("HomeScreen") },
+        { label: 'Profile', onPress: () => navigation.navigate("ProfileScreen") },
+        { label: 'History', onPress: () => navigation.navigate("HistoryScreen") },
+    ];
+
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={pickImage}>
@@ -96,7 +103,7 @@ const ProfileScreen = () => {
             <TouchableOpacity style={styles.button} onPress={saveProfile}>
                 <Text style={styles.buttonText}>Zapisz profil</Text>
             </TouchableOpacity>
-
+            <BottomMenu items={menuItems}/>
         </View>
     );
 };

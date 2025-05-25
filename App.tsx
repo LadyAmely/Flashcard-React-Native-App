@@ -8,6 +8,7 @@ import QuizScreen from "./screens/QuizScreen/QuizScreen.tsx";
 import StatsScreen from "./screens/StatsScreen/StatsScreen.tsx";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen.tsx";
 import OnboardingScreen from "./screens/OnboardingScreen/OnboardingScreen.tsx";
+import HistoryScreen from "./screens/HistoryScreen/HistoryScreen.tsx";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const App: React.FC = () => {
                 <Stack.Screen name="StatsScreen" component={StatsScreen} />
                 <Stack.Screen name="ProfileScreen" component={ProfileScreen}/>
                 <Stack.Screen name="OnboardingScreen" component={OnboardingScreen}/>
+                <Stack.Screen name="HistoryScreen" component={HistoryScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

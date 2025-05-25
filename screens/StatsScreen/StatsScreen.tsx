@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, Dimensions, TouchableOpacity} from 'react-native';
-import {BarChart, LineChart} from 'react-native-chart-kit';
+import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { BarChart } from 'react-native-chart-kit';
 import { styles } from './statsScreenStyles';
 import { StatsModel, DailyStat } from '../../models/StatsModel';
 import { FlashcardModel } from '../../models/FlashcardModel';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {COLORS} from "../../styles/colors/variables.ts";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { COLORS } from '../../styles/colors/variables';
 import { useNavigation } from '@react-navigation/native';
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../../types/navigation";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/navigation';
+import { db } from '../../firebase/firebaseConfig';
+import { doc, setDoc } from 'firebase/firestore';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'StatsScreen'>;
 
@@ -17,6 +19,7 @@ const StatsScreen = () => {
     const [knownFlashcards, setKnownFlashcards] = useState<string[]>([]);
     const [totalFlashcardsCount, setTotalFlashcardsCount] = useState<number>(0);
     const navigation = useNavigation<NavigationProp>();
+
     const statsModel = new StatsModel();
     const flashcardModel = new FlashcardModel();
 
@@ -33,8 +36,26 @@ const StatsScreen = () => {
 
                 const allFlashcards = await flashcardModel.fetchFlashcards();
                 setTotalFlashcardsCount(allFlashcards.length);
+
+                const correct = firebaseStats.reduce((acc, s) => acc + s.correct, 0);
+                const today = new Date().toISOString().slice(0, 10);
+
+                if (correct > 0) {
+                    const userId = 'demoUser'; // Zmień na UID jeśli masz auth
+                    const ref = doc(db, 'learningHistory', `${userId}_${today}`);
+
+                    await setDoc(ref, {
+                        date: today,
+                        learned: correct,
+                        userId,
+                        timestamp: new Date(),
+                    });
+
+                    console.log('✅ Statystyki zapisane do Firestore');
+                }
+
             } catch (error) {
-                console.error('Błąd podczas wczytywania statystyk:', error);
+                console.error('Błąd podczas wczytywania/zapisywania statystyk:', error);
             }
         };
 
@@ -54,13 +75,12 @@ const StatsScreen = () => {
     const handleResetAndBack = async () => {
         try {
             await statsModel.clearStats();
-            await AsyncStorage.removeItem('knownFlashcards'); // reset lokalnych danych
+            await AsyncStorage.removeItem('knownFlashcards');
             navigation.navigate('HomeScreen');
         } catch (error) {
             console.error('Błąd podczas resetowania statystyk:', error);
         }
     };
-
 
     return (
         <View style={styles.container}>
@@ -97,13 +117,12 @@ const StatsScreen = () => {
                     borderRadius: 16,
                 }}
                 verticalLabelRotation={0}
-             yAxisSuffix=""/>
+                yAxisSuffix=""
+            />
 
             <TouchableOpacity style={styles.resetButton} onPress={handleResetAndBack}>
                 <Text style={styles.resetButtonText}>Wróć</Text>
             </TouchableOpacity>
-
-
         </View>
     );
 };

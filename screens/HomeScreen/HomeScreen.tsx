@@ -35,9 +35,9 @@ const HomeScreen = () => {
     };
 
     const menuItems = [
-        { label: 'Home', onPress: () => Alert.alert('Home clicked') },
+        { label: 'Home', onPress: () => navigation.navigate("HomeScreen") },
         { label: 'Profile', onPress: () => navigation.navigate("ProfileScreen") },
-        { label: 'Settings', onPress: () => Alert.alert('Settings clicked') },
+        { label: 'History', onPress: () => navigation.navigate("HistoryScreen") },
     ];
 
     return (

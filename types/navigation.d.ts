@@ -10,4 +10,5 @@ export type RootStackParamList = {
     StatsScreen: { correct: number; total: number };
     ProfileScreen: undefined;
     OnboardingScreen: undefined;
+    HistoryScreen: undefined;
 };
